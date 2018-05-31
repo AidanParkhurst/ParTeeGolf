@@ -3,8 +3,9 @@ package main;
 import javax.swing.JFrame;
 
 //This will presumably be our main
-public class ParTeeGolf extends JFrame {
-	
+public class ParTeeGolf extends JFrame {	
+	private static final long serialVersionUID = 8846585003791597470L;
+
 	public ParTeeGolf() {
 		System.out.println("This is the frame starting!");
 	}
