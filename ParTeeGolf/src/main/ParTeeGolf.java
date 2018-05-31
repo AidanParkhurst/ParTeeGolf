@@ -3,7 +3,7 @@ package main;
 public class ParTeeGolf {
 
 	public static void main(String[] args ) {
-		System.out.println("This is amani pushing");
+		System.out.println("This is amani pushin");
 	}
 
 }
