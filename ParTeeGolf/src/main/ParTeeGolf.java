@@ -39,14 +39,12 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	GolfBall ball;
 	
 //Mouse controls
-	protected int cmx, cmy;
-	protected int mx, my;
-	protected int nmx, nmy;
-	protected int power;
-	protected int dm;
-	protected boolean dragLine = false;
+	protected int cmx, cmy; 	//Current mouseX mouseY, updated in every mouse event.
+	protected int mx, my; 		//Saved mouseX and mouseY when mouse is clicked
+	protected int power;	 	//Determines speed of hit, based on distance dragged 
+	protected boolean dragLine = false; //Whether or not to draw line while dragging
 	protected Stroke dashed = new BasicStroke(3,BasicStroke.CAP_BUTT,
-								BasicStroke.JOIN_BEVEL, 0, new float[]{8}, 0);
+								BasicStroke.JOIN_BEVEL, 0, new float[]{8}, 0); //G2D Stroke used for line
 	
 	public GamePanel() {
 		super();
@@ -71,17 +69,15 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		if(dragLine) {
 			g.setColor(Color.RED);
 			g.setStroke(dashed);
-			g.drawLine((int)ball.getX(), (int)ball.getY(), (int)ball.getX() - (nmx-mx), (int)ball.getY() - (nmy-my));
+			g.drawLine((int)ball.getX(), (int)ball.getY(), (int)ball.getX() - (cmx-mx), (int)ball.getY() - (cmy-my));
 		}
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		nmx = e.getX();
-		nmy = e.getY();
-		cmx = nmx;
-		cmy = nmy;
-		dm = (int)Math.sqrt(Math.pow(e.getX() - mx, 2) + Math.pow(e.getY() - my, 2));
+		cmx = e.getX();
+		cmy = e.getY();
+		int dm = (int)Math.sqrt(Math.pow(e.getX() - mx, 2) + Math.pow(e.getY() - my, 2));
 		power = dm / 20;
 	}
 
@@ -95,8 +91,8 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	public void mousePressed(MouseEvent e) {
 		mx = e.getX();
 		my = e.getY();
-		nmx = mx;
-		nmy = my;
+		cmx = mx;
+		cmy = my;
 		dragLine = true;
 	}
 
