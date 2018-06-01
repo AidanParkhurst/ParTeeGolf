@@ -102,11 +102,13 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		ball.setxVel(Math.cos(Math.atan2(my - e.getY(), mx - e.getX())) * power);
-		ball.setyVel(Math.sin(Math.atan2(my - e.getY(), mx - e.getX())) * power);
-		cmx = e.getX();
-		cmy = e.getY();
-		dragLine = false;
+		if(!(mx == e.getX() && my == e.getY())) {
+			ball.setxVel(Math.cos(Math.atan2(my - e.getY(), mx - e.getX())) * power);
+			ball.setyVel(Math.sin(Math.atan2(my - e.getY(), mx - e.getX())) * power);
+			cmx = e.getX();
+			cmy = e.getY();
+			dragLine = false;
+		}
 	}
 	
 //Unused
