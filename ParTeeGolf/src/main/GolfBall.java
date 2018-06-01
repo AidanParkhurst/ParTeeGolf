@@ -1,5 +1,7 @@
 package main;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class GolfBall {
@@ -12,6 +14,10 @@ public class GolfBall {
 	}
 	
 	public void paint(Graphics2D g) {
+		g.setStroke(new BasicStroke(2));
+		g.setColor(Color.WHITE);
+		g.fillArc((int)x - radius, (int)y - radius, radius*2, radius*2, 0, 360);
+		g.setColor(Color.BLACK);
 		g.drawArc((int)x - radius, (int)y - radius, radius*2, radius*2, 0, 360);
 	}
 	
@@ -29,8 +35,15 @@ public class GolfBall {
 			yVel = 0;
 		}
 	}
+	
+	public double getX() {
+		return x;
+	}
 
-		
+	public double getY() {
+		return y;
+	}
+
 	public double getxVel() {
 		return xVel;
 	}

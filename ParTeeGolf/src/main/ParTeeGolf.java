@@ -1,15 +1,19 @@
 package main;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 public class ParTeeGolf extends JFrame {	
 	private static final long serialVersionUID = 8846585003791597470L;
@@ -30,6 +34,8 @@ public class ParTeeGolf extends JFrame {
 }
 
 class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
+	private static final long serialVersionUID = 5639036629985791496L;
+	public static final int FPS = 60;
 	GolfBall ball;
 	
 //Mouse controls
@@ -45,12 +51,28 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	public GamePanel() {
 		super();
 		ball = new GolfBall();
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		Timer gameClock = new Timer(1000/FPS, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				repaint();
+				ball.update();
+			}
+		});
+		gameClock.start();
 	}
+	
 	@Override
 	public void paintComponent(Graphics g2) {
+		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;
 		ball.paint(g);
-		ball.update();
+		if(dragLine) {
+			g.setColor(Color.RED);
+			g.setStroke(dashed);
+			g.drawLine((int)ball.getX(), (int)ball.getY(), (int)ball.getX() - (nmx-mx), (int)ball.getY() - (nmy-my));
+		}
 	}
 
 	@Override
@@ -71,6 +93,11 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		mx = e.getX();
+		my = e.getY();
+		nmx = mx;
+		nmy = my;
+		dragLine = true;
 	}
 
 	@Override
