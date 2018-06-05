@@ -37,6 +37,7 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = 5639036629985791496L;
 	public static final int FPS = 60;
 	GolfBall ball;
+	LevelGrid testl;
 	
 //Mouse controls
 	protected int cmx, cmy; 	//Current mouseX mouseY, updated in every mouse event.
@@ -49,6 +50,7 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	public GamePanel() {
 		super();
 		ball = new GolfBall();
+		testl = new LevelGrid(7, 37, 419);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		Timer gameClock = new Timer(1000/FPS, new ActionListener() {
@@ -60,12 +62,15 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		});
 		gameClock.start();
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
+		testl.setWh(getHeight());
+		testl.setWw(getWidth());
 		Graphics2D g = (Graphics2D) g2;
 		ball.paint(g);
+		testl.paint(g);
 		if(dragLine) {
 			g.setColor(Color.RED);
 			g.setStroke(dashed);

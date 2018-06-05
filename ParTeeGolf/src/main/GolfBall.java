@@ -20,7 +20,7 @@ public class GolfBall {
 		g.setColor(Color.BLACK);
 		g.drawArc((int)x - radius, (int)y - radius, radius*2, radius*2, 0, 360);
 	}
-	
+
 	public void update() {
 		x += xVel;
 		y += yVel;
