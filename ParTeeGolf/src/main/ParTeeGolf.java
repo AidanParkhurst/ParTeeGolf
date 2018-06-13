@@ -14,7 +14,7 @@ import javax.swing.Timer;
 
 public class ParTeeGolf extends JFrame {	
 	private static final long serialVersionUID = 8846585003791597470L;
-	
+	public static final boolean DEBUG = true;
 	public ParTeeGolf() {
 		add(new GamePanel());
 	}
@@ -52,7 +52,6 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				repaint();
-				ball.update(testl);
 			}
 		});
 		gameClock.start();
@@ -65,6 +64,7 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		testl.setWw(getWidth());
 		Graphics2D g = (Graphics2D) g2;
 		testl.paint(g);
+		ball.update(testl);
 		ball.paint(g);
 	}
 
@@ -102,7 +102,7 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		dragLine = false;
 	}
 	
-//Unused
+//Unhandled
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
