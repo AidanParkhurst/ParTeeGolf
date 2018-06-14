@@ -12,7 +12,8 @@ public class Tile {
 	protected int w, h;
 	protected int x, y;
 	protected int type;
-	public static final int LEFT = 2, RIGHT = 1, TOP = 0, BOTTOM = 3;
+	public static final int LEFT = -2, RIGHT = 2, TOP = -10, BOTTOM = 10;
+	public static final int TOPLEFT = -12, TOPRIGHT = -8, BOTTOMLEFT = 8, BOTTOMRIGHT = 12;
 	public static final int EMPTY = 0, GRASS = 1, WALL = 2, END = 3, START = 4;
 	private boolean last = false;
 	private int img;
@@ -74,6 +75,18 @@ public class Tile {
 				result = TOP;
 			if(other.getY() > y)
 				result = BOTTOM;
+		}
+		if(other.getX() < x) {
+			if(other.getY() < y)
+				result = TOPLEFT;
+			if(other.getY() > y)
+				result = BOTTOMLEFT;
+		}
+		if(other.getX() > x) {
+			if(other.getY() < y)
+				result = TOPRIGHT;
+			if(other.getY() > y)
+				result = BOTTOMRIGHT;
 		}
 		return result;
 	}

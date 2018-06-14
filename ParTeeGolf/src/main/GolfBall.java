@@ -54,6 +54,22 @@ public class GolfBall {
 						if(t.compare(inLast) == Tile.TOP) {
 							cBottom = true;
 						}
+						if(t.compare(inLast) == Tile.TOPRIGHT) {
+							cBottom = true;
+							cLeft = true;
+						}
+						if(t.compare(inLast) == Tile.TOPLEFT) {
+							cBottom = true;
+							cRight = true;
+						}
+						if(t.compare(inLast) == Tile.BOTTOMRIGHT) {
+							cTop = true;
+							cLeft = true;
+						}
+						if(t.compare(inLast) == Tile.BOTTOMLEFT) {
+							cTop = true;
+							cRight = true;
+						}
 					}
 				}
 				else {

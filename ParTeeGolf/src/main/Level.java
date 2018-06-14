@@ -3,15 +3,14 @@ package main;
 import java.awt.Graphics2D;
 
 public class Level {
-	private int col, row;
 	private int ww, wh;
-	private int sw, sh;
 	private int xoff, yoff;
 	private int s;
 	private Tile[][] grid;
 	
-	public Level(Tile[][] g){
+	public Level(Tile[][] g, int s_){
 		grid = g;
+		s = s_;
 	}
 	
 	public void paint(Graphics2D g) {
@@ -20,7 +19,7 @@ public class Level {
 		for(int i = 0; i < grid.length; i++) {
 			Tile[] row = grid[i];
 			for(int j = 0; j < row.length; j++) {
-				row[j].paint(xoff + i * sw, yoff + j * sh, g);
+				row[j].paint(xoff + j * row[j].getW(), yoff + i * row[j].getH(), g);
 			}
 		}
 	}	

@@ -6,18 +6,28 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class LevelGen {
-	public LevelGen(String path) throws FileNotFoundException{
+	
+	public LevelGen(){
+		
+	}
+
+	public ArrayList<Level> generate(String path){
 		ArrayList<Level> res = new ArrayList<Level>();
 		File src = new File(path);
-		Scanner scan = new Scanner(src);
+		Scanner scan = null;
+		try {
+			scan = new Scanner(src);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		
 		ArrayList<Tile[]> tgrid = new ArrayList<Tile[]>();
 		Tile[][] grid;
 		int col = 0, row = 0;
 		int s = 0, sw = 0, sh = 0;
 		
-		while(scan.hasNext()) {
-			String curr = scan.next();
+		while(scan.hasNextLine()) {
+			String curr = scan.nextLine();
 			if(curr.startsWith("lvls")) {
 				String[] temp = curr.split(" ");
 				s = Integer.parseInt(temp[1]);
@@ -25,14 +35,13 @@ public class LevelGen {
 				sw = s / Integer.parseInt(dem[0]);
 				sh = s / Integer.parseInt(dem[1]);
 			}
-			if(curr.startsWith("lvle")) {
+			else if(curr.startsWith("lvle")) {
 				grid = new Tile[row][col];
 				for(Tile t[]: tgrid) {
 					grid[tgrid.indexOf(t)] = t;
-					for(int i = 0; i < t.length; i++)
-						grid[tgrid.indexOf(t)][i] = tgrid.get(tgrid.indexOf(t))[i];
 				}
-				res.add(new Level(grid));
+				tgrid = new ArrayList<Tile[]>();
+				res.add(new Level(grid,s));
 				col = 0;
 				row = 0;
 			}
@@ -40,9 +49,9 @@ public class LevelGen {
 				char[] line = curr.toCharArray();
 				col = line.length;
 				tgrid.add(new Tile[col]);
-				for(int i = 0; i < line.length; i++) {
+				for(int i = 0; i < col; i++) {
 					Tile t = new Tile(sw, sh);
-					switch(line[0]) {
+					switch(line[i]) {
 					case '-':
 						t.setType(Tile.EMPTY);
 						break;
@@ -51,10 +60,13 @@ public class LevelGen {
 						break;
 					case '#':
 						t.setType(Tile.WALL);
+						break;
 					case '@':
 						t.setType(Tile.START);
+						break;
 					case '*':
 						t.setType(Tile.END);
+						break;
 					}
 					tgrid.get(row)[i] = t;
 				}
@@ -62,5 +74,7 @@ public class LevelGen {
 			}
 		}
 		scan.close();
+		return res;
 	}
+
 }

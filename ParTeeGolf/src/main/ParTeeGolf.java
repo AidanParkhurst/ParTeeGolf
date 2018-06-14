@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,9 +34,12 @@ public class ParTeeGolf extends JFrame {
 class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = 5639036629985791496L;
 	public static final int FPS = 60;
+
+//Game Objects
 	GolfBall ball;
-	Level testl;
-	
+	LevelGen lg = new LevelGen();
+	ArrayList<Level> levels = lg.generate("data/levels.ptg");
+	Level testl = levels.get(2);
 //Mouse controls
 	protected int cmx, cmy; 	//Current mouseX mouseY, updated in every mouse event.
 	protected int mx, my; 		//Saved mouseX and mouseY when mouse is clicked
@@ -60,8 +64,10 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;
+		testl.setWh(getHeight());
+		testl.setWw(getWidth());
 		testl.paint(g);
-		ball.update();
+		ball.update(testl);
 		ball.paint(g);
 	}
 
