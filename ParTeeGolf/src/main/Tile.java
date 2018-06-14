@@ -11,8 +11,9 @@ public class Tile {
 	public Random r = new Random();
 	protected int w, h;
 	protected int x, y;
-	protected boolean filled;
+	protected int type;
 	public static final int LEFT = 2, RIGHT = 1, TOP = 0, BOTTOM = 3;
+	public static final int EMPTY = 0, GRASS = 1, WALL = 2, END = 3, START = 4;
 	private boolean last = false;
 	private int img;
 	
@@ -24,9 +25,9 @@ public class Tile {
 			Toolkit.getDefaultToolkit().getImage("assets/grass4.png"),
 			Toolkit.getDefaultToolkit().getImage("assets/grass5.png"),
 	};
+	private Image wall = Toolkit.getDefaultToolkit().getImage("assets/greybrick.png");
 	
 	public Tile(int width, int height) {
-		filled = Math.random() < .2;
 		w = width;
 		h = height;
 		img = r.nextInt(grasses.length);
@@ -35,24 +36,29 @@ public class Tile {
 	public void paint(int gx, int gy, Graphics2D g) {
 		x = gx;
 		y = gy;
-		if(!filled) {
+		if(type == GRASS) {
 			g.drawImage(grasses[img], x, y, w, h, null);
 		}
-		else {
-			g.fillRect(x, y, w, h);
+		else if(type == WALL){
+			g.setColor(Color.BLACK);
+			g.drawImage(wall, x, y, w, h, null);
 		}
 		if(ParTeeGolf.DEBUG) {
-			if(last)
+			if(last) {
 				g.setColor(Color.PINK);
-			else
+				g.fillRect(getX(), getY(), w, h);
+			}
+			else {
 				g.setColor(Color.RED);
+				g.drawRect(getX(), getY(), w, h);
+			}
 			g.setStroke(new BasicStroke(3));
-			g.drawRect(getX(), getY(), w, h);
+			
 		}
 	}
 	
 	public boolean contains(int ox, int oy) {
-		return (ox > x && ox < x + w) && (oy > y && oy < y + h);
+		return (ox >= x && ox <= x + w) && (oy >= y && oy <= y + h);
 	}
 	
 	public int compare(Tile other) {
@@ -72,12 +78,16 @@ public class Tile {
 		return result;
 	}
 	
+	public void setType(int type) {
+		this.type = type;
+	}
+	
 	public void setLast(boolean last) {
 		this.last = last;
 	}
 
-	public boolean getFilled() {
-		return filled;
+	public int getType() {
+		return type;
 	}
 
 	public int getW() {

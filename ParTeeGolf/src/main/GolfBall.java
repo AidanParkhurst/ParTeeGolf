@@ -28,7 +28,7 @@ public class GolfBall {
 
 	}
 
-	public void update(LevelGrid l) {
+	public void update(Level l) {
 		
 		Tile[][] grid = l.getGrid();
 		for(int i = 0; i < grid.length; i++) {
@@ -36,13 +36,12 @@ public class GolfBall {
 			for(int j = 0; j < row.length; j++) {
 				Tile t = row[j];
 				if(t.contains((int)x, (int)y)) {
-					if(!t.getFilled()) {
+					if(!(t.getType() == Tile.WALL)) {
 						inLast = t;
 						t.setLast(true);
 						resetC();
 					}
 					else {
-						t.setLast(false);
 						if(t.compare(inLast) == Tile.LEFT) {
 							cRight = true;
 						}
@@ -56,6 +55,9 @@ public class GolfBall {
 							cBottom = true;
 						}
 					}
+				}
+				else {
+					t.setLast(false);
 				}
 			}
 		}

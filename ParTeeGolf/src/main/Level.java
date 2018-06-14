@@ -2,7 +2,7 @@ package main;
 
 import java.awt.Graphics2D;
 
-public class LevelGrid {
+public class Level {
 	private int col, row;
 	private int ww, wh;
 	private int sw, sh;
@@ -10,19 +10,8 @@ public class LevelGrid {
 	private int s;
 	private Tile[][] grid;
 	
-	public LevelGrid(int c, int r, int side) {
-		col = c;
-		row = r;
-		s = side;
-		sw = s/col;
-		sh = s/row;
-		grid = new Tile[col][row];
-		for(int i = 0; i < grid.length; i++) {
-			Tile[] row = grid[i];
-			for(int j = 0; j < row.length; j++) {
-				row[j] = new Tile(sw, sh);
-			}
-		}
+	public Level(Tile[][] g){
+		grid = g;
 	}
 	
 	public void paint(Graphics2D g) {
