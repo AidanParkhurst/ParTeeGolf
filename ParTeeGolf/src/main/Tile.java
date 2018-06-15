@@ -27,6 +27,7 @@ public class Tile {
 			Toolkit.getDefaultToolkit().getImage("assets/grass5.png"),
 	};
 	private Image wall = Toolkit.getDefaultToolkit().getImage("assets/greybrick.png");
+	private Image hole = Toolkit.getDefaultToolkit().getImage("assets/grasshole.png");
 	
 	public Tile(int width, int height) {
 		w = width;
@@ -43,6 +44,9 @@ public class Tile {
 		else if(type == WALL){
 			g.setColor(Color.BLACK);
 			g.drawImage(wall, x, y, w, h, null);
+		}
+		else if(type == END) {
+			g.drawImage(hole, x, y, w, h, null);
 		}
 		if(ParTeeGolf.DEBUG) {
 			if(last) {

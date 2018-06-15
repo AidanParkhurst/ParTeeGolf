@@ -39,7 +39,7 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	GolfBall ball;
 	LevelGen lg = new LevelGen();
 	ArrayList<Level> levels = lg.generate("data/levels.ptg");
-	Level testl = levels.get(2);
+	Level testl = levels.get(1);
 //Mouse controls
 	protected int cmx, cmy; 	//Current mouseX mouseY, updated in every mouse event.
 	protected int mx, my; 		//Saved mouseX and mouseY when mouse is clicked
