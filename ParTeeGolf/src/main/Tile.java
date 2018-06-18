@@ -28,7 +28,7 @@ public class Tile {
 	};
 	private Image wall = Toolkit.getDefaultToolkit().getImage("assets/greybrick.png");
 	private Image hole = Toolkit.getDefaultToolkit().getImage("assets/grasshole.png");
-	
+	private Image tee = Toolkit.getDefaultToolkit().getImage("assets/grasstee.png");
 	public Tile(int width, int height) {
 		w = width;
 		h = height;
@@ -47,6 +47,9 @@ public class Tile {
 		}
 		else if(type == END) {
 			g.drawImage(hole, x, y, w, h, null);
+		}
+		else if(type == START) {
+			g.drawImage(tee, x, y, w, h, null);
 		}
 		if(ParTeeGolf.DEBUG) {
 			if(last) {
@@ -82,17 +85,21 @@ public class Tile {
 		}
 		if(other.getX() < x) {
 			if(other.getY() < y)
-				result = TOPLEFT;
+				result = LEFT;
 			if(other.getY() > y)
-				result = BOTTOMLEFT;
+				result = LEFT;
 		}
 		if(other.getX() > x) {
 			if(other.getY() < y)
-				result = TOPRIGHT;
+				result = RIGHT;
 			if(other.getY() > y)
-				result = BOTTOMRIGHT;
+				result = RIGHT;
 		}
 		return result;
+	}
+	
+	public boolean centered(int ox, int oy, int rad) {
+		return Math.sqrt(Math.pow(ox - (x + w/2), 2) + Math.pow(oy - (y + h/2), 2)) < rad*1.75;
 	}
 	
 	public void setType(int type) {

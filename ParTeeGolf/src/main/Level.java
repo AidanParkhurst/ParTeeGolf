@@ -7,9 +7,17 @@ public class Level {
 	private int xoff, yoff;
 	private int s;
 	private Tile[][] grid;
+	private Tile start;
 	
 	public Level(Tile[][] g, int s_){
 		grid = g;
+		for(int i = 0; i < grid.length; i++) {
+			Tile[] row = grid[i];
+			for(int j = 0; j < row.length; j++) {
+				if(row[j].getType() == Tile.START)
+					start = row[j];
+			}
+		}
 		s = s_;
 	}
 	
@@ -35,4 +43,7 @@ public class Level {
 		return grid;
 	}
 
+	public Tile getStart() {
+		return start;
+	}
 }

@@ -10,6 +10,7 @@ public class GolfBall {
 	protected double xVel, yVel;
 	protected boolean cRight, cLeft, cTop, cBottom;
 	protected Tile inLast = null;
+	protected boolean finished = false;
 	public GolfBall() {
 		
 	}
@@ -40,6 +41,13 @@ public class GolfBall {
 						inLast = t;
 						t.setLast(true);
 						resetC();
+						if(t.getType() == Tile.END) {
+							if(t.centered((int)x, (int)y, radius))
+								finished = true;
+						}
+						else {
+							finished = false;
+						}
 					}
 					else {
 						if(t.compare(inLast) == Tile.LEFT) {
@@ -95,13 +103,23 @@ public class GolfBall {
 		}
 	}
 	
+	public void start(int sx, int sy) {
+		x = sx;
+		y = sy;
+	}
+	
 	public void resetC() {
 		cLeft = false;
 		cRight = false;
 		cTop = false;
 		cBottom = false;
 	}
-	
+
+
+	public boolean isFinished() {
+		return finished;
+	}
+
 	public double getX() {
 		return x;
 	}

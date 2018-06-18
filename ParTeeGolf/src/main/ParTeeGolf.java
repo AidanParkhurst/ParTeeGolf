@@ -2,6 +2,9 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -34,17 +37,22 @@ public class ParTeeGolf extends JFrame {
 class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	private static final long serialVersionUID = 5639036629985791496L;
 	public static final int FPS = 60;
-
+	int cLvl = -1;
+	
 //Game Objects
 	GolfBall ball;
 	LevelGen lg = new LevelGen();
 	ArrayList<Level> levels = lg.generate("data/levels.ptg");
-	Level testl = levels.get(1);
+	Level currLevel;
+
 //Mouse controls
 	protected int cmx, cmy; 	//Current mouseX mouseY, updated in every mouse event.
 	protected int mx, my; 		//Saved mouseX and mouseY when mouse is clicked
-	protected int power;	 	//Determines speed of hit, based on distance dragged 
+	protected int power;	 	//Determines speed of hit, based on distance dragged
+	protected int powerCap = 20;
 	protected boolean dragLine = false; //Whether or not to draw line while dragging
+	protected int dragMax = 175;
+	protected Stroke dashed = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0);
 	
 	public GamePanel() {
 		super();
@@ -64,11 +72,24 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 	public void paintComponent(Graphics g2) {
 		super.paintComponent(g2);
 		Graphics2D g = (Graphics2D) g2;
-		testl.setWh(getHeight());
-		testl.setWw(getWidth());
-		testl.paint(g);
-		ball.update(testl);
+		if(ball.isFinished() && cLvl < levels.size() - 1 || cLvl == -1) {
+			ball.setxVel(0);
+			ball.setyVel(0);
+			cLvl++;
+			currLevel = levels.get(cLvl);
+			currLevel.setWh(getHeight());
+			currLevel.setWw(getWidth());
+			currLevel.paint(g);
+			ball.start(currLevel.getStart().getX() + currLevel.getStart().getW()/2,currLevel.getStart().getY() + currLevel.getStart().getH()/2);
+		}
+		ball.update(currLevel);
+		currLevel.paint(g);
 		ball.paint(g);
+		if(dragLine) {
+			g.setColor(Color.RED);
+			g.setStroke(dashed);
+			g.drawLine((int)ball.getX(), (int)ball.getY(), (int)(ball.getX() + limit(mx - cmx,dragMax)), (int)(ball.getY() + limit(my - cmy,dragMax)));
+		}
 	}
 
 	@Override
@@ -76,7 +97,8 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		cmx = e.getX();
 		cmy = e.getY();
 		int dm = (int)Math.sqrt(Math.pow(e.getX() - mx, 2) + Math.pow(e.getY() - my, 2));
-		power = dm / 20;
+		power = 2 + (dm / 10);
+		power = limit(power, powerCap);
 	}
 
 	@Override
@@ -105,6 +127,12 @@ class GamePanel extends JPanel implements MouseListener, MouseMotionListener{
 		dragLine = false;
 	}
 	
+	public int limit(int x, int cap) {
+		if(Math.abs(x) > cap)
+			return x < 0 ? cap * - 1: cap;
+		else
+			return x;
+	}
 //Unhandled
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
